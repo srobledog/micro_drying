@@ -1,0 +1,182 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r message=FALSE, warning=FALSE, echo=FALSE}
+library(tidyverse)
+library(tosr)
+library(bibliometrix)
+library(here)
+library(rmendeley)
+```
+
+# Data loading
+
+```{r}
+electro_40_raw <- 
+  convert2df(here("data", 
+                  "electrospinning_microorganisims_40.bib"), 
+             dbsource = "scopus", 
+             format = "bibtex")
+
+electro_56_raw <- 
+  convert2df(here("data", 
+                  "electrospinning_microorganisims_56_citation.bib"), 
+             dbsource = "scopus", 
+             format = "bibtex")
+
+freeze_5_raw <- 
+  convert2df(here("data", 
+                  "freeze_microorganisims_5.bib"), 
+             dbsource = "scopus", 
+             format = "bibtex")
+
+freeze_7_raw <- 
+  convert2df(here("data", 
+                  "freeze_microorganisims_7.bib"), 
+             dbsource = "scopus", 
+             format = "bibtex")
+
+freeze_18_raw <- 
+  convert2df(here("data", 
+                  "freeze_microorganisims_18.bib"), 
+             dbsource = "scopus", 
+             format = "bibtex")
+
+freeze_30_raw <- 
+  convert2df(here("data", 
+                  "freeze_microorganisims_30.bib"), 
+             dbsource = "scopus", 
+             format = "bibtex")
+
+spray_2_raw <- 
+  convert2df(here("data", 
+                  "spray_drying_microorganisims_2.bib"), 
+             dbsource = "scopus", 
+             format = "bibtex")
+
+spray_2_1_raw <- 
+  convert2df(here("data", 
+                  "spray_drying_microorganisims_2_1.bib"), 
+             dbsource = "scopus", 
+             format = "bibtex")
+
+spray_31_raw <- 
+  convert2df(here("data", 
+                  "spray_drying_microorganisims_31.bib"), 
+             dbsource = "scopus", 
+             format = "bibtex")
+
+fluidized_10_raw <-
+  bib2df(here("data", 
+              "fluidized_bed_drying_microorganisims_10.bib")) 
+
+
+
+fluidized_11_raw <- 
+  convert2df(here("data", 
+                  "fluidized_bed_drying_microorganisims_11.bib"), 
+             dbsource = "scopus", 
+             format = "bibtex")
+
+fluidized_22_raw <- 
+  convert2df(here("data", 
+                  "fluidized_bed_drying_microorganisims_22.bib"), 
+             dbsource = "scopus", 
+             format = "bibtex")
+
+```
+
+# Data tidying
+
+```{r}
+electro_40_tidied <- 
+  electro_40_raw |> 
+  select(TI, PY, DI) |> 
+  mutate(database = "electro_40")
+
+electro_56_tidied <- 
+  electro_56_raw |> 
+  select(TI, PY, DI) |> 
+  mutate(database = "electro_56")
+
+freeze_5_tidied <- 
+  freeze_5_raw |> 
+  select(TI, PY, DI) |> 
+  mutate(database = "freeze_5")
+
+freeze_7_tidied <- 
+  freeze_7_raw |> 
+  select(TI, PY, DI) |> 
+  mutate(database = "freeze_7")
+
+freeze_18_tidied <- 
+  freeze_18_raw |> 
+  select(TI, PY, DI) |> 
+  mutate(database = "freeze_18")
+
+freeze_30_tidied <- 
+  freeze_30_raw |> 
+  select(TI, PY, DI) |> 
+  mutate(database = "freeze_30")
+
+spray_2_tidied <- 
+  spray_2_raw |> 
+  select(TI, PY, DI) |> 
+  mutate(database = "spray_2")
+
+spray_2_1_tidied <- 
+  spray_2_1_raw |> 
+  select(TI, PY, DI) |> 
+  mutate(database = "spray_2_1")
+
+spray_31_tidied <- 
+  spray_31_raw |> 
+  select(TI, PY, DI) |> 
+  mutate(database = "spray_31")
+
+fluidized_10_tidied <- 
+  fluidized_10_raw |> 
+  select(TI = TITLE,
+         PY = YEAR, 
+         DI = DOI) |> 
+  mutate(database = "spray_31")
+
+fluidized_11_tidied <- 
+  fluidized_11_raw |> 
+  select(TI, PY, DI) |> 
+  mutate(database = "fluidized_11")
+
+fluidized_22_tidied <- 
+  fluidized_22_raw |> 
+  select(TI, PY, DI) |> 
+  mutate(database = "fluidized_2")
+```
+
+Merging data
+
+```{r}
+micro_drying <- 
+  electro_40_tidied |> 
+  bind_rows(electro_56_tidied,
+            freeze_5_tidied,
+            freeze_7_tidied,
+            freeze_18_tidied,
+            freeze_30_tidied,
+            spray_2_tidied,
+            spray_2_1_tidied,
+            spray_31_tidied,
+            fluidized_10_tidied,
+            fluidized_11_tidied,
+            fluidized_22_tidied)
+
+```
+
+
+# Exporitng data
+
+```{r}
+write_csv(micro_drying, here("output", "micro_drying.csv"))
+```
+
