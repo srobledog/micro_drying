@@ -38,7 +38,7 @@ vignettes/*.pdf
 # R Environment Variables
 .Renviron
 Icon*
-.Rproj
+*.Rproj
 *.nb.html
 /data
 /output
