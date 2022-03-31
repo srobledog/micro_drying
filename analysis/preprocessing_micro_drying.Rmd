@@ -107,6 +107,10 @@ wos_scopus_total_annual_production |>
 # Exporitng data
 
 ```{r}
+micro_drying <- 
+  wos_scopus_tos$df |> 
+  select(TI, AB, PY, DE, ID, PY, DI, ref_type)
+
 write_csv(micro_drying, here("output", "micro_drying.csv"))
 ```
 
